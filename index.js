@@ -4,10 +4,14 @@ var _ = require('lodash')
 
 var base = new Airtable({apiKey: process.env.AIRTABLE_KEY}).base(process.env.AIRTABLE_BASE);
 
-// Bank user ids by team_id
-var bankUsers = {
-  T0266FRGM: 'UH50T81A6',
-  TH438LCR3: 'UH2HS2SBS',
+// App user ids by team_id
+var apps = {
+  T0266FRGM: {
+    bank: 'UH50T81A6',
+  },
+  TH438LCR3: {
+    bank: 'UH2HS2SBS',
+  }
 }
 
 var redisConfig = {
@@ -16,60 +20,6 @@ var redisConfig = {
 var redisStorage = require('botkit-storage-redis')(redisConfig)
 
 console.log("Booting Toriel bot")
-
-var startState = 'Cat Requested'
-
-function createCatQuestState(user, cb = () => {}) {
-  console.log(`Creating balance for User ${user}`)
-  
-  base('States').create({
-    "User": user,
-    "CatQuest": startState
-  }, function(err, record) {
-      if (err) { console.error(err); return; }
-      console.log(`New record created for User ${user}`)
-      // console.log(record)
-      cb(startState, record)
-  });
-}
-
-function setCatQuestState(id, state, cb = () => {}) {
-  console.log(`Setting CatQuest for Record ${id} to ${state}`)
-
-  base('States').update(id, {
-    "CatQuest": state
-  }, function(err, record) {
-    if (err) { console.error(err); return; }
-    console.log(`CatQuest for Record ${id} set to ${state}`)
-    cb(state, record)
-  })
-}
-
-function getCatQuestState(user, cb = () => {}) {
-  console.log(`Retrieving CatQuest for User ${user}`)
-
-  base('States').select({
-    filterByFormula: `User = "${user}"`
-  }).firstPage(function page(err, records) {
-    if (err) {
-      console.error(err)
-      return
-    }
-
-    if (records.length == 0) {
-      console.log(`No CatQuest state found for User ${user}.`)
-      createCatQuestState(user, cb)
-    }
-    else {
-      var record = records[0]
-      var fields = record.fields
-      var state = fields['CatQuest']
-      console.log(`CatQuest state for User ${user} is ${state}`)
-      console.log(fields)
-      cb(balance, record)
-    }
-  })
-}
 
 var controller = Botkit.slackbot({
   clientId: process.env.SLACK_CLIENT_ID,
@@ -86,24 +36,11 @@ controller.setupWebserver(process.env.PORT, function(err,webserver) {
     controller.createOauthEndpoints(controller.webserver)
 });
 
-var bot = controller.spawn({
-});
-
-bot.say({
-  text: 'Awake',
-  channel: '@UDK5M9Y13'
-});
-
-controller.hears(['question me'], 'message_received', function(bot,message) {
-
-
-});
-
 // @bot hello --> Begins the Cat Rescue quest
 controller.hears(/hello/i, 'direct_message', (bot, message) => {
   // console.log(message)
   var {text, user, team_id} = message
-  var bankUser = bankUsers[team_id]
+  var bankUser = apps[team_id].bank
 
   console.log(`${user}: ${text}`)
   console.log(`Oh, user ${user} says hello. How wonderful!`)
@@ -112,14 +49,36 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
     // create a path for the goodbye
     convo.addMessage({
       delay: 2000,
-      text: `Well, goodbye for now <@${user}>... don't be a stranger!`,
+      text: `Oh! Another visitor. My, what a busy day.`,
+    },'kid_arrives')
+
+    convo.addMessage({
+      delay: 10000,
+      text: `Poor thing. He comes around these parts to beg from the farms.`,
+    },'kid_arrives')
+
+    convo.addMessage({
+      delay: 1000,
+      text: `I swear, every time he's looking for a cat...`,
+    },'kid_arrives')
+
+    convo.addMessage({
+      delay: 1000,
+      text: `Just give him this one :cat:. The little dearie doesn't seem to know the difference.`,
       action: 'completed'
-    },'goodbye')
+    },'kid_arrives')
+    
+    bot.say({
+      delay: 2000,
+      user: `@${kidUser}`,
+      channel: `@${kidUser}`,
+      text: `meet <@${user}>`,
+    })
     
     // create a path for when a user says YES
     convo.addMessage({
       text: 'Oh, good! I am sure you will enjoy it!',
-      action: 'goodbye'
+      action: 'kid_arrives'
     },'yes_thread')
 
     // create a path for when a user says NO
@@ -130,7 +89,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
     convo.addMessage({
       delay: 2000,
       text: '...maybe later.',
-      action: 'goodbye'
+      action: 'kid_arrives'
     },'no_thread')
 
     // create a path where neither option was matched
