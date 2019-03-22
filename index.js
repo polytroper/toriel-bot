@@ -8,9 +8,11 @@ var base = new Airtable({apiKey: process.env.AIRTABLE_KEY}).base(process.env.AIR
 var apps = {
   T0266FRGM: {
     bank: 'UH50T81A6',
+    kid: 'UH68K6MQA'
   },
   TH438LCR3: {
     bank: 'UH2HS2SBS',
+    kid: 'UGWL1NZED'
   }
 }
 
@@ -41,6 +43,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
   // console.log(message)
   var {text, user, team_id} = message
   var bankUser = apps[team_id].bank
+  var kidUser = apps[team_id].kid
 
   console.log(`${user}: ${text}`)
   console.log(`Oh, user ${user} says hello. How wonderful!`)
