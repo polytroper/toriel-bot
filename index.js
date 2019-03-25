@@ -1,8 +1,15 @@
 var Botkit = require('botkit')
 var Airtable = require('airtable')
 var _ = require('lodash')
+var Airbot = require('./airbot.js')
 
-var base = new Airtable({apiKey: process.env.AIRTABLE_KEY}).base(process.env.AIRTABLE_BASE);
+const {
+  User,
+  base
+} = Airbot({
+  botName: 'toriel',
+  defaultRecord: {}
+})
 
 // App user ids by team_id
 var apps = {
