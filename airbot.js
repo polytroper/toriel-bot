@@ -74,7 +74,7 @@ const Airbot = (spec) => {
     }
 
     // Creates an object with direct methods for dealing with a single user's data
-    const User = (user, team, cb) => {
+    const Record = (user, team, cb) => {
         const apps = appsByTeamId[team]
 
         getUserRecord(user, (record) => {
@@ -112,7 +112,7 @@ const Airbot = (spec) => {
     }
 
     return {
-        User,
+        Record,
         base
     }
 }
