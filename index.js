@@ -79,7 +79,6 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
     },'kid_arrives')
     
     const kidMessage = {
-      delay: 10000,
       user: `@${kidUser}`,
       channel: `@${kidUser}`,
       text: `meet <@${user}>`,
@@ -133,7 +132,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
           
           convo.gotoThread('yes_thread')
 
-          bot.say(kidMessage)
+          setTimeout(() => bot.say(kidMessage), 8000)
         },
       },
       {
@@ -144,7 +143,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
 
           convo.gotoThread('no_thread')
 
-          bot.say(kidMessage)
+          setTimeout(() => bot.say(kidMessage), 5000)
         },
       },
       {
