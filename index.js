@@ -11,18 +11,6 @@ const {
   defaultRecord: {}
 })
 
-// App user ids by team_id
-var apps = {
-  T0266FRGM: {
-    bank: 'UH50T81A6',
-    kid: 'UH68K6MQA'
-  },
-  TH438LCR3: {
-    bank: 'UH2HS2SBS',
-    kid: 'UGWL1NZED'
-  }
-}
-
 var redisConfig = {
   url: process.env.REDISCLOUD_URL
 }
@@ -46,10 +34,12 @@ controller.setupWebserver(process.env.PORT, function(err,webserver) {
 });
 
 // Begin the welcome process
-const startWelcomeConversation = (message) => {
+const startWelcomeConversation = (message, record) => {
   var {text, user, team_id} = message
-  var bankUser = apps[team_id].bank
-  var kidUser = apps[team_id].kid
+
+  var apps = record.apps
+  var bankUser = apps.bank
+  var kidUser = apps.kid
 
   bot.startConversation(message, function(err,convo) {
     console.log(`What's this? Someone named ${user} is saying hello...`)
@@ -82,6 +72,11 @@ const startWelcomeConversation = (message) => {
           convo.gotoThread('yes_thread')
 
           setTimeout(() => bot.say(kidMessage), 8000)
+
+          record.set({
+            'Greeted': true,
+            'Peanut Butter': true
+          })
         },
       },
       {
@@ -93,6 +88,11 @@ const startWelcomeConversation = (message) => {
           convo.gotoThread('no_thread')
 
           setTimeout(() => bot.say(kidMessage), 8000)
+
+          record.set({
+            'Greeted': true,
+            'Peanut Butter': false
+          })
         },
       },
       {
@@ -152,12 +152,17 @@ const startWelcomeConversation = (message) => {
 // @bot hello --> Begins the welcome process
 controller.hears(/hello/i, 'direct_message', (bot, message) => {
   // console.log(message)
-  var {text, user} = message
+  var {text, user, team_id} = message
 
   console.log(`${user}: ${text}`)
   console.log(`Oh, user ${user} says hello. How wonderful!`)
 
-  startWelcomeConversation(message)
+  Record(user, team_id, record => {
+    if (!record.get('Greeted'))
+      startWelcomeConversation(message, record)
+    else
+      bot.reply(message, 'Oh hello again! I hope you are doing well here.')
+  })
 })
 
 controller.hears('.*', 'direct_mention,direct_message', (bot, message) => {
