@@ -52,58 +52,6 @@ const startWelcomeConversation = (message) => {
   var kidUser = apps[team_id].kid
 
   bot.startConversation(message, function(err,convo) {
-    // create a path for the goodbye
-    convo.addMessage({
-      delay: 2000,
-      text: `Oh! Another visitor. My, what a busy day.`,
-    },'kid_arrives')
-
-    convo.addMessage({
-      delay: 10000,
-      text: `Poor thing. He comes around these parts to beg from the farms.`,
-    },'kid_arrives')
-
-    convo.addMessage({
-      delay: 1000,
-      text: `I swear, every time he's looking for a cat...`,
-    },'kid_arrives')
-
-    convo.addMessage({
-      delay: 1000,
-      text: `Just give him this one :cat:. The little dearie doesn't seem to know the difference.`,
-      action: 'completed'
-    },'kid_arrives')
-    
-    const kidMessage = {
-      user: `@${kidUser}`,
-      channel: `@${kidUser}`,
-      text: `meet <@${user}>`,
-    }
-    
-    // create a path for when a user says YES
-    convo.addMessage({
-      text: 'Oh, good! I am sure you will enjoy it!',
-      action: 'kid_arrives'
-    },'yes_thread')
-
-    // create a path for when a user says NO
-    convo.addMessage({
-      text: 'Oh... okay, no cake for now then.',
-    },'no_thread')
-
-    convo.addMessage({
-      delay: 2000,
-      text: '...maybe later.',
-      action: 'kid_arrives'
-    },'no_thread')
-
-    // create a path where neither option was matched
-    // this message has an action field, which directs botkit to go back to the `default` thread after sending this message.
-    convo.addMessage({
-      text: 'Oh, um. I don\'t think I understand.\n...do you want the cake?',
-      action: 'default',
-    },'bad_response')
-
     console.log(`What's this? Someone named ${user} is saying hello...`)
 
     convo.say({
@@ -115,7 +63,12 @@ const startWelcomeConversation = (message) => {
       text: `...you must be new in town.`
     })
 
-    // Create a yes/no question in the default thread...
+    const kidMessage = {
+      user: `@${kidUser}`,
+      channel: `@${kidUser}`,
+      text: `meet <@${user}>`,
+    }
+
     convo.addQuestion({
       delay: 2000,
       text: `You look a little hungry. Would you like some carrot cake? I baked it just this morning!`
@@ -149,6 +102,49 @@ const startWelcomeConversation = (message) => {
         },
       }
     ],{},'default')
+    
+    // create a path for when a user says YES
+    convo.addMessage({
+      text: 'Oh, good! I am sure you will enjoy it!',
+      action: 'kid_arrives'
+    },'yes_thread')
+
+    // create a path for when a user says NO
+    convo.addMessage({
+      text: 'Oh... okay, no cake for now then.',
+    },'no_thread')
+
+    convo.addMessage({
+      delay: 2000,
+      text: '...maybe later.',
+      action: 'kid_arrives'
+    },'no_thread')
+
+    convo.addMessage({
+      text: 'Oh, um. I don\'t think I understand.\n...do you want the cake?',
+      action: 'default',
+    },'bad_response')
+
+    convo.addMessage({
+      delay: 2000,
+      text: `Oh! Another visitor. My, what a busy day.`,
+    },'kid_arrives')
+
+    convo.addMessage({
+      delay: 15000,
+      text: `Poor thing. He comes around these parts to beg from the farms.`,
+    },'kid_arrives')
+
+    convo.addMessage({
+      delay: 1000,
+      text: `I swear, every time he's looking for a cat...`,
+    },'kid_arrives')
+
+    convo.addMessage({
+      delay: 1000,
+      text: `Just give him this one :cat:. The little dearie doesn't seem to know the difference.`,
+      action: 'completed'
+    },'kid_arrives')
 
   })
 }
