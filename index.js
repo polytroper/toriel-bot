@@ -78,12 +78,12 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
       action: 'completed'
     },'kid_arrives')
     
-    bot.say({
-      delay: 2000,
+    const kidMessage = {
+      delay: 10000,
       user: `@${kidUser}`,
       channel: `@${kidUser}`,
       text: `meet <@${user}>`,
-    })
+    }
     
     // create a path for when a user says YES
     convo.addMessage({
@@ -132,6 +132,8 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
           console.log(`Ooh, ${user} wants to try my cake! I do hope they enjoy it`)
           
           convo.gotoThread('yes_thread')
+
+          bot.say(kidMessage)
         },
       },
       {
@@ -141,6 +143,8 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
           console.log(`I guess ${user} doesn't want to try the cake. Oh well :(`)
 
           convo.gotoThread('no_thread')
+
+          bot.say(kidMessage)
         },
       },
       {
