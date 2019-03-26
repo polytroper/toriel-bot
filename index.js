@@ -132,7 +132,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
           
           convo.gotoThread('yes_thread')
 
-          setTimeout(() => bot.say(kidMessage), 8000)
+          setTimeout(() => bot.say(kidMessage), 9000)
         },
       },
       {
@@ -143,7 +143,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
 
           convo.gotoThread('no_thread')
 
-          setTimeout(() => bot.say(kidMessage), 5000)
+          setTimeout(() => bot.say(kidMessage), 9000)
         },
       },
       {
