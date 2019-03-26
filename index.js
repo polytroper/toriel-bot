@@ -45,15 +45,11 @@ controller.setupWebserver(process.env.PORT, function(err,webserver) {
     controller.createOauthEndpoints(controller.webserver)
 });
 
-// @bot hello --> Begins the Cat Rescue quest
-controller.hears(/hello/i, 'direct_message', (bot, message) => {
-  // console.log(message)
+// Begin the welcome process
+const startWelcomeConversation = (message) => {
   var {text, user, team_id} = message
   var bankUser = apps[team_id].bank
   var kidUser = apps[team_id].kid
-
-  console.log(`${user}: ${text}`)
-  console.log(`Oh, user ${user} says hello. How wonderful!`)
 
   bot.startConversation(message, function(err,convo) {
     // create a path for the goodbye
@@ -132,7 +128,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
           
           convo.gotoThread('yes_thread')
 
-          setTimeout(() => bot.say(kidMessage), 9000)
+          setTimeout(() => bot.say(kidMessage), 8000)
         },
       },
       {
@@ -143,7 +139,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
 
           convo.gotoThread('no_thread')
 
-          setTimeout(() => bot.say(kidMessage), 9000)
+          setTimeout(() => bot.say(kidMessage), 8000)
         },
       },
       {
@@ -155,6 +151,17 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
     ],{},'default')
 
   })
+})
+
+// @bot hello --> Begins the welcome process
+controller.hears(/hello/i, 'direct_message', (bot, message) => {
+  // console.log(message)
+  var {text, user} = message
+
+  console.log(`${user}: ${text}`)
+  console.log(`Oh, user ${user} says hello. How wonderful!`)
+
+  startWelcomeConversation(message)
 })
 
 controller.hears('.*', 'direct_mention,direct_message', (bot, message) => {
