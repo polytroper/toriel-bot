@@ -1,7 +1,7 @@
 var Botkit = require('botkit')
 var Airtable = require('airtable')
 var _ = require('lodash')
-var Airbot = require('./airbot.js')
+var Airbot = require('./airbot.js').default
 
 const {
   User,

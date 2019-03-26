@@ -115,4 +115,4 @@ const Airbot = (spec) => {
     }
 }
 
-export default Airbot
+exports.default = Airbot
