@@ -4,13 +4,15 @@ const _ = require('lodash')
 
 // App user ids by team_id
 var appsByTeamId = {
-    T0266FRGM: {
+    T0266FRGM: { // Hack Club
         bank: 'UH50T81A6',
-        kid: 'UH68K6MQA'
+        kid: 'UH68K6MQA',
+        toriel: 'UH7CT042G'
     },
-    TH438LCR3: {
+    TH438LCR3: { // Bot Dev
         bank: 'UH2HS2SBS',
-        kid: 'UGWL1NZED'
+        kid: 'UGWL1NZED',
+        toriel: 'UH4VDNNLQ'
     }
 }
 
