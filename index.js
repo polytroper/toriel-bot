@@ -151,7 +151,7 @@ const startWelcomeConversation = (message) => {
     ],{},'default')
 
   })
-})
+}
 
 // @bot hello --> Begins the welcome process
 controller.hears(/hello/i, 'direct_message', (bot, message) => {
