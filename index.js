@@ -76,7 +76,7 @@ const startWelcomeConversation = (message, record) => {
           record.set({
             'Greeted': true,
             'Peanut Butter': true
-          })
+          }, () => {})
         },
       },
       {
@@ -92,7 +92,7 @@ const startWelcomeConversation = (message, record) => {
           record.set({
             'Greeted': true,
             'Peanut Butter': false
-          })
+          }, () => {})
         },
       },
       {
