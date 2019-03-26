@@ -4,7 +4,7 @@ var _ = require('lodash')
 var Airbot = require('./airbot.js').default
 
 const {
-  User,
+  Record,
   base
 } = Airbot({
   botName: 'toriel',
