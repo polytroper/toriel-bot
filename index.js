@@ -208,7 +208,11 @@ controller.hears(/thanks, <@([A-z|0-9]+)> gave me a cat/i, 'direct_message', (bo
     channel: '@'+target,
   }
 
-  startDirectionsConversation(fakeMessage)
+  console.log(`How lovely, ${user} gave the cat to the poor child.`)
+
+  Record(user, team_id, record => {
+    startDirectionsConversation(fakeMessage, record)
+  })
 })
 
 controller.hears('.*', 'direct_mention,direct_message', (bot, message) => {
