@@ -221,6 +221,9 @@ controller.hears(/thanks, <@([A-z|0-9]+)> gave me a cat/i, 'direct_message', (bo
 controller.on('team_join', (bot, message) => {
   var {user, team_id} = message
 
+  // user object structure is different for this event...
+  user = user.id
+
   console.log(message)
   console.log(`Somebody named ${user} has come along... I don't think I recognize them. Perhaps they need help!`)
 
