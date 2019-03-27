@@ -218,6 +218,17 @@ controller.hears(/thanks, <@([A-z|0-9]+)> gave me a cat/i, 'direct_message', (bo
   })
 })
 
+controller.on('team_join', (bot, message) => {
+  var {user, team_id} = message
+
+  console.log(message)
+  console.log(`Somebody named ${user} has come along... I don't think I recognize them. Perhaps they need help!`)
+
+  Record(user, team_id, record => {
+    startWelcomeConversation(message, record)
+  })
+})
+
 controller.hears('.*', 'direct_mention,direct_message', (bot, message) => {
   var {text, user} = message
   console.log(message)
