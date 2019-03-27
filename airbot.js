@@ -3,16 +3,26 @@ const Airtable = require('airtable')
 const _ = require('lodash')
 
 // App user ids by team_id
-var appsByTeamId = {
+var channelAppIds = {
     T0266FRGM: { // Hack Club
-        bank: 'UH50T81A6',
-        kid: 'UH68K6MQA',
-        toriel: 'UH7CT042G'
+        channels: {
+            lounge: 'C0266FRGV'
+        },
+        apps: {
+            bank: 'UH50T81A6',
+            kid: 'UH68K6MQA',
+            toriel: 'UH7CT042G'
+        }
     },
     TH438LCR3: { // Bot Dev
-        bank: 'UH2HS2SBS',
-        kid: 'UGWL1NZED',
-        toriel: 'UH4VDNNLQ'
+        channels: {
+            lounge: 'CH3KHRL11'
+        },
+        apps: {
+            bank: 'UH2HS2SBS',
+            kid: 'UGWL1NZED',
+            toriel: 'UH4VDNNLQ'
+        }
     }
 }
 
@@ -75,7 +85,7 @@ const Airbot = (spec) => {
 
     // Creates an object with direct methods for dealing with a single user's data
     const Record = (user, team, cb) => {
-        const apps = appsByTeamId[team]
+        const {channels, apps} = channelAppIds[team]
 
         getUserRecord(user, (record) => {
             let fields = record.fields
@@ -106,7 +116,8 @@ const Airbot = (spec) => {
                 get,
                 set,
                 refresh,
-                apps
+                apps,
+                channels
             })
         })
     }
