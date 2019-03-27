@@ -122,7 +122,13 @@ const Airbot = (spec) => {
         })
     }
 
+    const getChannels = team => channelAppIds[team].channels
+
+    const getApps = team => channelAppIds[team].apps
+
     return {
+        getChannels,
+        getApps,
         Record,
         base
     }

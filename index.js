@@ -4,6 +4,8 @@ var _ = require('lodash')
 var Airbot = require('./airbot.js').default
 
 const {
+  getChannels,
+  getApps,
   Record,
   base
 } = Airbot({
