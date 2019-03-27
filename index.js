@@ -33,6 +33,39 @@ controller.setupWebserver(process.env.PORT, function(err,webserver) {
     controller.createOauthEndpoints(controller.webserver)
 });
 
+// Give directions to lounge
+const startDirectionsConversation = (message, record) => {
+  var {text, user, team_id} = message
+
+  var apps = record.apps
+  var bankUser = apps.bank
+  var kidUser = apps.kid
+
+  bot.startPrivateConversation(message, function(err,convo) {
+    console.log(`Now that the poor child is gone, maybe ${user} could use some directions to town?`)
+
+    convo.say({
+      delay: 2000,
+      text: `I do hope that child finds his way.`
+    })
+
+    convo.say({
+      delay: 2000,
+      text: `Say, you could probably use some directions.`
+    })
+
+    convo.say({
+      delay: 2000,
+      text: `Have you been to #lounge yet? That's where folks tend to hang out.`
+    })
+
+    convo.say({
+      delay: 2000,
+      text: `Head on over there and introduce yourself!`
+    })
+  })
+}
+
 // Begin the welcome process
 const startWelcomeConversation = (message, record) => {
   var {text, user, team_id} = message
@@ -163,6 +196,19 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
     else
       bot.reply(message, 'Oh hello again! I hope you are doing well here.')
   })
+})
+
+controller.hears(/thanks, <@([A-z|0-9]+)> gave me a cat/i, 'direct_message', (bot, message) => {
+  var {text, user, team_id, match} = message
+  var target = match[1]
+
+  var fakeMessage = {
+    user: target,
+    team_id,
+    channel: '@'+target,
+  }
+
+  startDirectionsConversation(fakeMessage)
 })
 
 controller.hears('.*', 'direct_mention,direct_message', (bot, message) => {
