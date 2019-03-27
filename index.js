@@ -38,6 +38,7 @@ const startDirectionsConversation = (message, record) => {
   var {text, user, team_id} = message
 
   var apps = record.apps
+  var channels = record.channels
   var bankUser = apps.bank
   var kidUser = apps.kid
 
@@ -56,7 +57,7 @@ const startDirectionsConversation = (message, record) => {
 
     convo.say({
       delay: 2000,
-      text: `Have you been to #lounge yet? That's where folks tend to hang out.`
+      text: `Have you been to <#${channels.lounge}|lounge> yet? That's where folks tend to hang out.`
     })
 
     convo.say({
