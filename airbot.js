@@ -95,7 +95,7 @@ const Airbot = (spec) => {
             const get = key => fields[key]
 
             // Set a value from this user's Airbot record
-            const set = (obj, cb) => {
+            const set = (obj, cb = () => {}) => {
                 updateRecord(id, obj, freshRecord => {
                     record = freshRecord
                     fields = record.fields
