@@ -255,7 +255,10 @@ controller.on('team_join', (bot, message) => {
 })
 
 controller.on('member_joined_channel', (bot, message) => {
-  var {user, team_id} = message
+  var {user, team_id, channel} = message
+
+  // Only proceed for #lounge
+  if (channel != getChannels(team_id).lounge) return
 
   console.log(message)
   console.log(`Looks like ${user} made their way to lounge! I'm so glad they're finding their way.`)
