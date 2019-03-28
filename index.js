@@ -310,6 +310,7 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
 
   Record(user, team_id, record => {
     var channelsUsed = _.clone(record.get('Channels Used'))
+    var totalMessages = record.get('Total Messages')
 
     // Apparently this will come back undefined from airtable if it's empty??
     if (!channelsUsed) channelsUsed = []
@@ -319,6 +320,7 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
 
     record.set({
       'Channels Used': channelsUsed,
+      'Total Messages': totalMessages+1
     })
   })
 })
