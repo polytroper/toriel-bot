@@ -263,7 +263,6 @@ controller.on('member_joined_channel', (bot, message) => {
   console.log(message)
   console.log(`Looks like ${user} made their way to lounge! I'm so glad they're finding their way.`)
 
-
   Record(user, team_id, record => {
     record.set({
       'Joined Lounge': true,
