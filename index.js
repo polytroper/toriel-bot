@@ -239,7 +239,7 @@ controller.on('team_join', (bot, message) => {
 
   // Workaround to avoid bug where conversation doesn't work without an initiating interaction from user
   bot.api.im.open({
-    user
+    user: user.id
   }, (err, res) => {
       if (err) {
         bot.botkit.log(`Failed to open IM with ${user}`, err)
