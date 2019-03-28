@@ -78,7 +78,7 @@ const startWelcomeConversation = (message, record) => {
   var kidUser = apps.kid
 
   bot.startConversation(message, function(err,convo) {
-    console.log(`What's this? Someone named ${user} is saying hello...`)
+    console.log(`Ah! A new person named ${user} has arrived...`)
 
     convo.say({
       delay: 0,
