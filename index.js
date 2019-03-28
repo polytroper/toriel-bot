@@ -313,7 +313,6 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
       channelsUsed.push(channelName)
 
     record.set({
-      'Joined Lounge': true,
       'Channels Used': channelsUsed,
     })
   })
