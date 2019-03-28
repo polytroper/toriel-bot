@@ -28,6 +28,7 @@ const newbies = []
 
 // Refresh the list of new members
 const refreshNewbies = cb => {
+  console.log('Refreshing newbies...')
   newbies.length = 0
   base('toriel').select({
     view: "Newbies"
@@ -40,6 +41,7 @@ const refreshNewbies = cb => {
   }, function done(err) {
     if (err) { console.error(err); return; }
 
+    console.log('Newbies refreshed')
     cb()
   })
 }
@@ -290,6 +292,8 @@ controller.on('message.channels', (bot, message) => {
   var {event, team_id} = message
   var {user, text, channel} = event
 
+  console.log(`Message in ${channel}: ${text}`)
+
   if (!_.includes(newbies, user)) return
 
   var channelName = getChannelName(channel)
@@ -304,7 +308,7 @@ controller.on('message.channels', (bot, message) => {
 
     if (!_.includes(channelsUsed, channelName))
       channelsUsed.push(channelName)
-      
+
     record.set({
       'Joined Lounge': true,
       'Channels Used': channelsUsed,
