@@ -221,7 +221,9 @@ controller.hears(/thanks, <@([A-z|0-9]+)> gave me a cat/i, 'direct_message', (bo
   console.log(`How lovely, ${user} gave the cat to the poor child.`)
 
   Record(user, team_id, record => {
-    startDirectionsConversation(fakeMessage, record)
+    record.set({
+      'Cat Received': true
+    }, () => startDirectionsConversation(fakeMessage, record))
   })
 })
 
