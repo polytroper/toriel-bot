@@ -34,11 +34,12 @@ const Airbot = (spec) => {
 
     const base = new Airtable({apiKey: process.env.AIRTABLE_KEY}).base(process.env.AIRTABLE_BASE)
 
-    const initializeUserRecord = (user, cb) => {
-        console.log(`Creating balance for User ${user}`)
+    const initializeUserRecord = (user, team, cb) => {
+        console.log(`Creating record for User ${user} on team ${team}`)
 
         var newRecord = _.cloneDeep(defaultRecord)
         newRecord.User = user
+        newRecord.Team = team
 
         base(botName).create(newRecord, function(err, record) {
             if (err) { console.error(err); return; }
@@ -59,7 +60,7 @@ const Airbot = (spec) => {
         })
     }
 
-    const getUserRecord = (user, cb) => {
+    const getUserRecord = (user, team, cb) => {
         console.log(`Retrieving record for User ${user}`)
 
         base(botName).select({
@@ -72,7 +73,7 @@ const Airbot = (spec) => {
 
             if (records.length == 0) {
                 console.log(`No record found for User ${user}.`)
-                initializeUserRecord(user, cb)
+                initializeUserRecord(user, team, cb)
             }
             else {
                 var record = records[0]
@@ -87,7 +88,7 @@ const Airbot = (spec) => {
     const Record = (user, team, cb) => {
         const {channels, apps} = channelAppIds[team]
 
-        getUserRecord(user, (record) => {
+        getUserRecord(user, team, (record) => {
             let fields = record.fields
             const id = record.id
             
@@ -105,7 +106,7 @@ const Airbot = (spec) => {
 
             // Refresh this user's Airbot record
             const refresh = (cb) => {
-                getUserRecord(user, freshRecord => {
+                getUserRecord(user, team, freshRecord => {
                     record = freshRecord
                     fields = record.fields
                     cb(record)
@@ -126,9 +127,29 @@ const Airbot = (spec) => {
 
     const getApps = team => channelAppIds[team].apps
 
+    const getChannelName = (channel, team) => {
+        _.each(getChannels(team), (v, k) => {
+            if (v == channel) {
+                return k
+            }
+        })
+        return channel
+    }
+
+    const getAppName = (app, team) => {
+        _.each(getApps(team), (v, k) => {
+            if (v == app) {
+                return k
+            }
+        })
+        return app
+    }
+
     return {
         getChannels,
         getApps,
+        getChannelName,
+        getAppName,
         Record,
         base
     }
