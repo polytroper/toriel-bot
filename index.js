@@ -279,6 +279,8 @@ controller.on('team_join', (bot, message) => {
   })
 })
 
+// Disabled for now, because members join lounge by default
+/*
 controller.on('member_joined_channel', (bot, message) => {
   var {user, team_id, channel} = message
 
@@ -294,6 +296,7 @@ controller.on('member_joined_channel', (bot, message) => {
     })
   })
 })
+*/
 
 controller.hears('.*', 'direct_mention,direct_message', (bot, message) => {
   var {text, user} = message
