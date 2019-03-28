@@ -133,7 +133,8 @@ const Airbot = (spec) => {
     const getChannelName = (channel, team) => {
         _.each(getChannels(team), (v, k) => {
             if (v == channel) {
-                return k
+                channel = k
+                return false
             }
         })
         return channel
@@ -142,7 +143,8 @@ const Airbot = (spec) => {
     const getAppName = (app, team) => {
         _.each(getApps(team), (v, k) => {
             if (v == app) {
-                return k
+                app = k
+                return false
             }
         })
         return app
