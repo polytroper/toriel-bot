@@ -231,16 +231,17 @@ controller.on('team_join', (bot, message) => {
   console.log(message)
   console.log(`Somebody named ${user.id} has come along... I don't think I recognize them. Perhaps they need help!`)
 
-  var fakeMessage = {
-    user: user.id,
-    channel: user.id,
-    team_id
-  }
-
   // Workaround to avoid bug where conversation doesn't work without an initiating interaction from user
+  // Taken from: https://github.com/howdyai/botkit/issues/422#issuecomment-258875047
   bot.api.im.open({
     user: user.id
   }, (err, res) => {
+      var fakeMessage = {
+        user: user.id,
+        channel: res.channel.id,
+        team_id
+      }
+
       if (err) {
         bot.botkit.log(`Failed to open IM with ${user}`, err)
         return
