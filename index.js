@@ -6,6 +6,8 @@ var Airbot = require('./airbot.js').default
 const {
   getChannels,
   getApps,
+  getChannelName,
+  getAppName,
   Record,
   base
 } = Airbot({
@@ -59,6 +61,8 @@ controller.setupWebserver(process.env.PORT, function(err,webserver) {
     controller.createWebhookEndpoints(controller.webserver)
     controller.createOauthEndpoints(controller.webserver)
 });
+
+
 
 // Give directions to lounge
 const startDirectionsConversation = (message, record) => {
@@ -274,8 +278,37 @@ controller.on('team_join', (bot, message) => {
         return
       }
       Record(user.id, team_id, record => {
+        refreshNewbies()
+        console.log(`Current Newbies:`)
+        console.log(newbies)
         startWelcomeConversation(fakeMessage, record)
       })
+  })
+})
+
+controller.on('message.channels', (bot, message) => {
+  var {event, team_id} = message
+  var {user, text, channel} = event
+
+  if (!_.includes(newbies, user)) return
+
+  var channelName = getChannelName(channel)
+
+  console.log(`One of our new friends—${user}—posted a message in #${channelName}: ${text}`)
+
+  // Stop here if we don't know the name of the channel
+  if (channelName == channel) return
+
+  Record(user, team_id, record => {
+    var channelsUsed = _.clone(record.get('Channels Used'))
+
+    if (!_.includes(channelsUsed, channelName))
+      channelsUsed.push(channelName)
+      
+    record.set({
+      'Joined Lounge': true,
+      'Channels Used': channelsUsed,
+    })
   })
 })
 
