@@ -237,9 +237,19 @@ controller.on('team_join', (bot, message) => {
     team_id
   }
 
-  Record(user.id, team_id, record => {
-    startWelcomeConversation(fakeMessage, record)
+  // Workaround to avoid bug where conversation doesn't work without an initiating interaction from user
+  bot.api.im.open({
+    user
+  }, (err, res) => {
+      if (err) {
+        bot.botkit.log(`Failed to open IM with ${user}`, err)
+        return
+      }
+      Record(user.id, team_id, record => {
+        startWelcomeConversation(fakeMessage, record)
+      })
   })
+
 })
 
 controller.hears('.*', 'direct_mention,direct_message', (bot, message) => {
