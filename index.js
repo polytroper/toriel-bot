@@ -89,6 +89,11 @@ const startWelcomeConversation = (message, record) => {
       text: `...you must be new in town.`
     })
 
+    convo.say({
+      delay: 1500,
+      text: `You look a little hungry. Have some bread—I baked it fresh this morning!`
+    })
+
     const kidMessage = {
       user: `@${kidUser}`,
       channel: `@${kidUser}`,
@@ -97,13 +102,13 @@ const startWelcomeConversation = (message, record) => {
 
     convo.addQuestion({
       delay: 2000,
-      text: `You look a little hungry. Would you like some carrot cake? I baked it just this morning!`
+      text: `Do you... want peanut butter on your bread?`
     }, [
       {
         pattern: bot.utterances.yes,
         callback: function(response, convo) {
           console.log(`${user}: ${response.text}`)
-          console.log(`Ooh, ${user} wants to try my cake! I do hope they enjoy it`)
+          console.log(`Indeed, ${user} wants peanut butter!`)
           
           convo.gotoThread('yes_thread')
 
@@ -119,7 +124,7 @@ const startWelcomeConversation = (message, record) => {
         pattern: bot.utterances.no,
         callback: function(response, convo) {
           console.log(`${user}: ${response.text}`)
-          console.log(`I guess ${user} doesn't want to try the cake. Oh well :(`)
+          console.log(`Oh, ${user} doesn't want any peanut butter.`)
 
           convo.gotoThread('no_thread')
 
@@ -141,23 +146,25 @@ const startWelcomeConversation = (message, record) => {
     
     // create a path for when a user says YES
     convo.addMessage({
-      text: 'Oh, good! I am sure you will enjoy it!',
+      delay: 1500,
+      text: 'Oh, good! I like peanut butter too.',
       action: 'kid_arrives'
     },'yes_thread')
 
     // create a path for when a user says NO
     convo.addMessage({
-      text: 'Oh... okay, no cake for now then.',
+      delay: 1500,
+      text: 'Oh... okay, no peanut butter then.',
     },'no_thread')
 
     convo.addMessage({
-      delay: 2000,
+      delay: 1500,
       text: '...maybe later.',
       action: 'kid_arrives'
     },'no_thread')
 
     convo.addMessage({
-      text: 'Oh, um. I don\'t think I understand.\n...do you want the cake?',
+      text: 'Oh, um. I don\'t think I understand.\n...do you want peanut butter?',
       action: 'default',
     },'bad_response')
 
