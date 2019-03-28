@@ -20,6 +20,31 @@ var redisStorage = require('botkit-storage-redis')(redisConfig)
 
 console.log("Booting Toriel bot")
 
+
+// Our list of members that joined within the last few days
+const newbies = []
+
+// Refresh the list of new members
+const refreshNewbies = cb => {
+  newbies.length = 0
+  base('toriel').select({
+    view: "Newbies"
+  }).eachPage(function page(records, fetchNextPage) {
+    records.forEach(function(record) {
+      newbies.push(record.get('User'))
+    })
+
+    fetchNextPage()
+  }, function done(err) {
+    if (err) { console.error(err); return; }
+
+    cb()
+  })
+}
+
+// Should booting of entire bot wait for newbies to populate?
+refreshNewbies(() => {})
+
 var controller = Botkit.slackbot({
   clientId: process.env.SLACK_CLIENT_ID,
   clientSecret: process.env.SLACK_CLIENT_SECRET,
