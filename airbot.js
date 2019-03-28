@@ -9,7 +9,8 @@ var channelAppIds = {
             lounge: 'C0266FRGV',
             ship: 'C0M8PUPU6',
             code: 'C0EA9S0A0',
-            welcome: 'C75M7C0SY'
+            welcome: 'C75M7C0SY',
+            hq: 'C0C78SG9L'
         },
         apps: {
             bank: 'UH50T81A6',
