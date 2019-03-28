@@ -288,7 +288,7 @@ controller.on('team_join', (bot, message) => {
   })
 })
 
-controller.on('message.channels', (bot, message) => {
+controller.hears(/.*/, 'ambient', (bot, message) => {
   var {event, team_id} = message
   var {user, text, channel} = event
 
