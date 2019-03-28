@@ -281,7 +281,7 @@ controller.on('team_join', (bot, message) => {
       }
       Record(user.id, team_id, record => {
         refreshNewbies()
-        
+
         console.log(`Current Newbies:`)
         console.log(newbies)
         
@@ -299,7 +299,11 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
 
   console.log(`Message in ${channel}: ${text}`)
 
+  // Ignore messages from non-newbies
   if (!_.includes(newbies, user)) return
+
+  // Ignore "<user> is typing in <channel>..." messages
+  if (_.includes(text, ' is typing in #')) return
 
   var channelName = getChannelName(channel, team_id)
 
