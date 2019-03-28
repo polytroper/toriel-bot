@@ -6,7 +6,10 @@ const _ = require('lodash')
 var channelAppIds = {
     T0266FRGM: { // Hack Club
         channels: {
-            lounge: 'C0266FRGV'
+            lounge: 'C0266FRGV',
+            ship: 'C0M8PUPU6',
+            code: 'C0EA9S0A0',
+            welcome: 'C75M7C0SY'
         },
         apps: {
             bank: 'UH50T81A6',
