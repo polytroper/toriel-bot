@@ -296,7 +296,7 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
 
   if (!_.includes(newbies, user)) return
 
-  var channelName = getChannelName(channel)
+  var channelName = getChannelName(channel, team_id)
 
   console.log(`One of our new friends—${user}—posted a message in #${channelName}: ${text}`)
 
