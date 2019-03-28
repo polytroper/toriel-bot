@@ -306,6 +306,9 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
   Record(user, team_id, record => {
     var channelsUsed = _.clone(record.get('Channels Used'))
 
+    // Apparently this will come back undefined from airtable if it's empty??
+    if (!channelsUsed) channelsUsed = []
+
     if (!_.includes(channelsUsed, channelName))
       channelsUsed.push(channelName)
 
