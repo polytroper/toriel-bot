@@ -316,6 +316,9 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
     var channelsUsed = _.clone(record.get('Channels Used'))
     var totalMessages = record.get('Total Messages')
 
+    // Catch unfdefined values for totalMessages
+    if (!totalMessages) totalMessages = 0
+
     // Apparently this will come back undefined from airtable if it's empty??
     if (!channelsUsed) channelsUsed = []
 
