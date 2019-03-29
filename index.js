@@ -332,6 +332,19 @@ controller.hears(/.*/, 'ambient', (bot, message) => {
   })
 })
 
+controller.on('message.im', (bot, message) => {
+  var {team_id, event} = message
+  var {user, channel} = event
+
+  console.log(`A message was just posted in a DM channel by user ${user}`)
+})
+
+controller.on('im_open', (bot, message) => {
+  var {user, channel} = message
+
+  console.log(`An IM was just opened by user ${user}`)
+})
+
 // Disabled for now, because members join lounge by default
 /*
 controller.on('member_joined_channel', (bot, message) => {
