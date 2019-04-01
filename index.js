@@ -295,13 +295,15 @@ controller.hears(/(?:.*<@([A-z|0-9])>)*/, 'ambient', (bot, message) => {
   var {event, team_id, match} = message
   var {user, text, channel} = event
 
-  console.log(`Message in ${channel}: ${text}`)
-
   // Ignore "<user> is typing in <channel>..." messages
   if (_.includes(text, ' is typing in #')) return
 
+  console.log(message)
+  console.log(`Message in ${channel}: ${text}`)
+
   // For messages from non-newbies, see if a newbie is mentioned
   if (!_.includes(newbies, user)) {
+    console.log(match)
     var matches = _.tail(match)
 
     if (matches.length == 0) return
