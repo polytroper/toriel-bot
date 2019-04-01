@@ -291,7 +291,7 @@ controller.on('team_join', (bot, message) => {
   })
 })
 
-controller.hears(/(?:.*<@([A-z|0-9])>)*/, 'ambient', (bot, message) => {
+controller.hears(/<@([A-z|0-9])>/g, 'ambient', (bot, message) => {
   var {event, team_id, match} = message
   var {user, text, channel} = event
 
