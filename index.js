@@ -64,8 +64,6 @@ controller.setupWebserver(process.env.PORT, function(err,webserver) {
     controller.createOauthEndpoints(controller.webserver)
 });
 
-
-
 // Give directions to lounge
 const startDirectionsConversation = (message, record) => {
   var {text, user, team_id} = message
