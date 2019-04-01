@@ -291,17 +291,47 @@ controller.on('team_join', (bot, message) => {
   })
 })
 
-controller.hears(/.*/, 'ambient', (bot, message) => {
-  var {event, team_id} = message
+controller.hears(/(?:.*<@([A-z|0-9])>)*/, 'ambient', (bot, message) => {
+  var {event, team_id, match} = message
   var {user, text, channel} = event
 
   console.log(`Message in ${channel}: ${text}`)
 
-  // Ignore messages from non-newbies
-  if (!_.includes(newbies, user)) return
-
   // Ignore "<user> is typing in <channel>..." messages
   if (_.includes(text, ' is typing in #')) return
+
+  // For messages from non-newbies, see if a newbie is mentioned
+  if (!_.includes(newbies, user)) {
+    var matches = _.tail(match)
+
+    if (matches.length == 0) return
+    
+    console.log(`We got matches!`)
+    console.log(matches)
+
+    var newbieMatches = _.filter(matches, v => _.includes(newbies, v))
+
+    if (newbieMatches == 0) return
+
+    console.log(`We got newbie matches!`)
+    console.log(newbieMatches)
+
+    // Record each newbie's mention
+    _.each(newbieMatches, v => {
+      Record(v, team_id, record => {
+        var totalMentions = record.get('Total Mentions')
+    
+        // Catch unfdefined values for totalMentions
+        if (!totalMentions) totalMentions = 0
+    
+        record.set({
+          'Total Mentions': totalMentions+1
+        })
+      })
+    })
+
+    return
+  }
 
   var channelName = getChannelName(channel, team_id)
 
