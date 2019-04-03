@@ -122,11 +122,20 @@ const startWelcomeConversation = (message, record) => {
 
     convo.ask({
       delay: 2000,
-      text: `What brings you here?`,
       blocks: [
         {
           "type": "actions",
           "elements": [
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "so... what brings you to town?"
+              }
+            },
+            {
+              "type": "divider"
+            },
             {
               "type": "button",
               "text": {
