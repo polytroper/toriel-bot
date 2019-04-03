@@ -298,24 +298,19 @@ controller.hears([/(?<=<@)([A-z|0-9]+)(?=>)/g, /.*/], 'ambient', (bot, message) 
   // Ignore "<user> is typing in <channel>..." messages
   if (_.includes(text, ' is typing in #')) return
 
-  console.log(message)
+  // console.log(message)
   console.log(`Message in ${channel}: ${text}`)
 
   // For messages from non-newbies, see if a newbie is mentioned
   if (!_.includes(newbies, user)) {
+    console.log(`Checking for newbie mentions:`)
     console.log(match)
-    var matches = _.tail(match)
 
-    if (matches.length == 0) return
-    
-    console.log(`We got matches!`)
-    console.log(matches)
+    var newbieMatches = _.filter(match, v => _.includes(newbies, v))
 
-    var newbieMatches = _.filter(matches, v => _.includes(newbies, v))
+    if (newbieMatches.length == 0) return
 
-    if (newbieMatches == 0) return
-
-    console.log(`We got newbie matches!`)
+    console.log(`We got newbie mentions!`)
     console.log(newbieMatches)
 
     // Record each newbie's mention
