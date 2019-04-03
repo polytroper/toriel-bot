@@ -16,6 +16,12 @@ var channelAppIds = {
             bank: 'UH50T81A6',
             kid: 'UH68K6MQA',
             toriel: 'UH7CT042G'
+        },
+        users: {
+            cwalker: 'UDK5M9Y13',
+            msw: 'U0C7B14Q3',
+            zrl: 'U0266FRGP',
+            md: 'U3EGCMEMU'
         }
     },
     TH438LCR3: { // Bot Dev
@@ -26,6 +32,12 @@ var channelAppIds = {
             bank: 'UH2HS2SBS',
             kid: 'UGWL1NZED',
             toriel: 'UH4VDNNLQ'
+        },
+        users: {
+            cwalker: 'UH56DCHJS',
+            msw: 'UH56DCHJS',
+            zrl: 'UH56DCHJS',
+            md: 'UH56DCHJS'
         }
     }
 }
@@ -90,7 +102,7 @@ const Airbot = (spec) => {
 
     // Creates an object with direct methods for dealing with a single user's data
     const Record = (user, team, cb) => {
-        const {channels, apps} = channelAppIds[team]
+        const {channels, apps, users} = channelAppIds[team]
 
         getUserRecord(user, team, (record) => {
             let fields = record.fields
@@ -122,7 +134,8 @@ const Airbot = (spec) => {
                 set,
                 refresh,
                 apps,
-                channels
+                channels,
+                users
             })
         })
     }
@@ -130,6 +143,8 @@ const Airbot = (spec) => {
     const getChannels = team => channelAppIds[team].channels
 
     const getApps = team => channelAppIds[team].apps
+
+    const getUsers = team => channelAppIds[team].users
 
     const getChannelName = (channel, team) => {
         _.each(getChannels(team), (v, k) => {
@@ -151,11 +166,23 @@ const Airbot = (spec) => {
         return app
     }
 
+    const getUserName = (user, team) => {
+        _.each(getUsers(team), (v, k) => {
+            if (v == user) {
+                user = k
+                return false
+            }
+        })
+        return user
+    }
+
     return {
         getChannels,
         getApps,
+        getUsers,
         getChannelName,
         getAppName,
+        getUserName,
         Record,
         base
     }
