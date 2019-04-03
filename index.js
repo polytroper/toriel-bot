@@ -102,10 +102,7 @@ const startDirectionsConversation = (message, record) => {
 const startWelcomeConversation = (message, record) => {
   var {text, user, team_id} = message
 
-  var apps = record.apps
-  var users = record.users
-  var bankUser = apps.bank
-  var kidUser = apps.kid
+  var {apps, users, channels} = record
 
   bot.startConversation(message, function(err,convo) {
     console.log(`Ah! A new person named ${user} has arrived...`)
