@@ -103,6 +103,7 @@ const startWelcomeConversation = (message, record) => {
   var {text, user, team_id} = message
 
   var apps = record.apps
+  var users = record.users
   var bankUser = apps.bank
   var kidUser = apps.kid
 
@@ -118,105 +119,117 @@ const startWelcomeConversation = (message, record) => {
       text: `...you must be new in town.`
     })
 
-    convo.say({
-      delay: 1500,
-      text: `You look a little hungry. Have some bread—I baked it fresh this morning!`
+    record.set({
+      'Greeted': true
     })
 
-    const kidMessage = {
-      user: `@${kidUser}`,
-      channel: `@${kidUser}`,
-      text: `meet <@${user}>`,
-    }
-
-    convo.addQuestion({
+    convo.ask({
       delay: 2000,
-      text: `Do you... want peanut butter on your bread?`
+      text: `What brings you here?`,
+      blocks: [
+        {
+          "type": "actions",
+          "elements": [
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Running a club :hack_club:",
+                "emoji": true
+              },
+              "value": "club"
+            },
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Coding help :laptop_fire:",
+                "emoji": true
+              },
+              "value": "code"
+            },
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "just chillin :dark_sunglasses:",
+                "emoji": true
+              },
+              "value": "chill"
+            }
+          ]
+        }
+      ]
     }, [
       {
-        pattern: bot.utterances.yes,
+        pattern: 'club',
         callback: function(response, convo) {
           console.log(`${user}: ${response.text}`)
-          console.log(`Indeed, ${user} wants peanut butter!`)
+          console.log(`So ${user} is here because they run a club (or aspire to). I'll send them to #leaders`)
           
-          convo.gotoThread('yes_thread')
+          convo.gotoThread('club_thread')
 
           setTimeout(() => bot.say(kidMessage), 8000)
 
           record.set({
-            'Greeted': true,
-            'Peanut Butter': true
-          }, () => {})
+            'Reason for Joining': 'club'
+          })
         },
       },
       {
-        pattern: bot.utterances.no,
+        pattern: 'code',
         callback: function(response, convo) {
           console.log(`${user}: ${response.text}`)
-          console.log(`Oh, ${user} doesn't want any peanut butter.`)
-
-          convo.gotoThread('no_thread')
-
-          setTimeout(() => bot.say(kidMessage), 8000)
+          console.log(`Sounds like ${user} could use some coding help. I'll send them to #code`)
+          
+          convo.gotoThread('code_thread')
 
           record.set({
-            'Greeted': true,
-            'Peanut Butter': false
-          }, () => {})
+            'Reason for Joining': 'code'
+          })
         },
       },
       {
-        default: true,
+        pattern: 'chill',
         callback: function(response, convo) {
-          convo.gotoThread('bad_response')
+          console.log(`${user}: ${response.text}`)
+          console.log(`I guess ${user} is just here to chill. I'll send them to #lounge`)
+          
+          convo.gotoThread('chill_thread')
+
+          record.set({
+            'Reason for Joining': 'chill'
+          })
         },
       }
-    ],{},'default')
+    ])
     
-    // create a path for when a user says YES
+    // create a path for 'club' users
     convo.addMessage({
       delay: 1500,
-      text: 'Oh, good! I like peanut butter too.',
-      action: 'kid_arrives'
-    },'yes_thread')
+      text: `Oh how lovely! Well, head over to <#${channels.hq}|hq> and introduce yourself.`,
+      action: 'goodbye_thread'
+    }, 'club_thread')
 
-    // create a path for when a user says NO
+    // create a path for 'code' users
     convo.addMessage({
       delay: 1500,
-      text: 'Oh... okay, no peanut butter then.',
-    },'no_thread')
+      text: `Wonderful! Whatever questions you have, post them in <#${channels.code}|code>`,
+      action: 'goodbye_thread'
+    }, 'code_thread')
 
+    // create a path for 'chill' users
     convo.addMessage({
       delay: 1500,
-      text: '...maybe later.',
-      action: 'kid_arrives'
-    },'no_thread')
-
-    convo.addMessage({
-      text: 'Oh, um. I don\'t think I understand.\n...do you want peanut butter?',
-      action: 'default',
-    },'bad_response')
+      text: `That's mostly what I'm here for too. Introduce yourself in <#${channels.lounge}|lounge>—a lot of people hang out there.`,
+      action: 'goodbye_thread',
+    }, 'chill_thread')
 
     convo.addMessage({
       delay: 2000,
-      text: `Oh! Another visitor. My, what a busy day.`,
-    },'kid_arrives')
-
-    convo.addMessage({
-      delay: 15000,
-      text: `Poor thing. He comes around these parts to beg from the farms.`,
-    },'kid_arrives')
-
-    convo.addMessage({
-      delay: 1000,
-      text: `I swear, every time he's looking for a cat...`,
-    },'kid_arrives')
-
-    convo.addMessage({
-      delay: 1000,
-      text: `Just give him this one :cat:. The little dearie doesn't seem to know the difference.`,
+      text: `Good luck out there! And if you need anything, just message <@${users.cwalker}>—he can help.`,
       action: 'completed'
-    },'kid_arrives')
+    }, 'goodbye_thread')
 
   })
 }
