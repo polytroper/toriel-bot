@@ -175,8 +175,6 @@ const startWelcomeConversation = (message, record) => {
           
           convo.gotoThread('club_thread')
 
-          setTimeout(() => bot.say(kidMessage), 8000)
-
           record.set({
             'Reason for Joining': 'club'
           })
