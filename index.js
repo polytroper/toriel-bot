@@ -299,8 +299,8 @@ controller.on('team_join', (bot, message) => {
           console.log(`Current Newbies:`)
           console.log(newbies)
           
-          // For now, don't initiate contact with users in the main Hack Club workspace
-          if (team_id == 'T0266FRGM') return
+          // Block initiation of contact with users in the main Hack Club workspace
+          // if (team_id == 'T0266FRGM') return
   
           startWelcomeConversation(fakeMessage, record)
         })
