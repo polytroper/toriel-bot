@@ -295,15 +295,15 @@ controller.on('team_join', (bot, message) => {
         return
       }
       Record(user.id, team_id, record => {
-        refreshNewbies()
-
-        console.log(`Current Newbies:`)
-        console.log(newbies)
-        
-        // For now, don't initiate contact with users in the main Hack Club workspace
-        if (team_id == 'T0266FRGM') return
-
-        startWelcomeConversation(fakeMessage, record)
+        refreshNewbies(() => {
+          console.log(`Current Newbies:`)
+          console.log(newbies)
+          
+          // For now, don't initiate contact with users in the main Hack Club workspace
+          if (team_id == 'T0266FRGM') return
+  
+          startWelcomeConversation(fakeMessage, record)
+        })
       })
   })
 })
