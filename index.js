@@ -171,9 +171,9 @@ const startWelcomeConversation = (message, record) => {
       {
         pattern: 'club',
         callback: function(response, convo) {
-          console.log(`${user}: ${response.text}`)
           console.log(`So ${user} is here because they run a club (or aspire to). I'll send them to #leaders`)
           
+          bot.replyInteractive(response, `_You tell toriel that you're here about your club._`)
           convo.gotoThread('club_thread')
 
           record.set({
@@ -184,9 +184,9 @@ const startWelcomeConversation = (message, record) => {
       {
         pattern: 'code',
         callback: function(response, convo) {
-          console.log(`${user}: ${response.text}`)
           console.log(`Sounds like ${user} could use some coding help. I'll send them to #code`)
           
+          bot.replyInteractive(response, `_You tell toriel that your laptop is trying to kill you._`)
           convo.gotoThread('code_thread')
 
           record.set({
@@ -197,9 +197,9 @@ const startWelcomeConversation = (message, record) => {
       {
         pattern: 'chill',
         callback: function(response, convo) {
-          console.log(`${user}: ${response.text}`)
           console.log(`I guess ${user} is just here to chill. I'll send them to #lounge`)
           
+          bot.replyInteractive(response, `_You tell toriel that you're just here for the chills, bruh._`)
           convo.gotoThread('chill_thread')
 
           record.set({
