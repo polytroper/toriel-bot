@@ -139,6 +139,7 @@ const Airbot = (spec) => {
                             'Real Name': real_name
                         }, cb)
                     }
+                    else cb()
                 })
             }
 
