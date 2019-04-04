@@ -122,6 +122,7 @@ const startWelcomeConversation = (message, record) => {
 
     convo.ask({
       delay: 2000,
+      text: 'test test test',
       blocks: [
         {
           "type": "section",
