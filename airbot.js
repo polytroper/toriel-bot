@@ -132,8 +132,8 @@ const Airbot = (spec) => {
             const updateNames = cb => {
                 bot.api.users.info({user}, (error, response) => {
                     let {name, real_name} = response.user
-                    console.log(name, real_name);
                     if (get('Display Name') != name || get('Real Name') != real_name) {
+                        console.log(`Updating names for ${user} (${name}, ${real_name})`)
                         set({
                             'Display Name': name,
                             'Real Name': real_name
