@@ -130,7 +130,7 @@ const Airbot = (spec) => {
             }
 
             const updateNames = cb => {
-                bot.api.users.info({user: message.user}, (error, response) => {
+                bot.api.users.info({user}, (error, response) => {
                     let {name, real_name} = response.user
                     console.log(name, real_name);
                     if (get('Display Name') != name || get('Real Name') != real_name) {
