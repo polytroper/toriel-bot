@@ -102,10 +102,10 @@ const textButtonElement = (text, value) => ({
   type: "button",
   text: {
     type: "plain_text",
-    text: "not a bot I promise :no_entry_sign: :robot_face:",
-    emoji: true
+    emoji: true,
+    text,
   },
-  value: "not a bot"
+  value,
 })
 
 // Begin the welcome process
