@@ -436,7 +436,7 @@ controller.on('team_join', (bot, message) => {
           console.log(newbies)
           
           // Block initiation of contact with users in the main Hack Club workspace
-          if (team_id == 'T0266FRGM') return
+          // if (team_id == 'T0266FRGM') return
   
           startWelcomeConversation(fakeMessage, record)
         })
