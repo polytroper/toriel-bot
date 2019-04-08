@@ -98,6 +98,16 @@ const startDirectionsConversation = (message, record) => {
   })
 }
 
+const textButtonElement = (text, value) => ({
+  type: "button",
+  text: {
+    type: "plain_text",
+    text: "not a bot I promise :no_entry_sign: :robot_face:",
+    emoji: true
+  },
+  value: "not a bot"
+})
+
 // Begin the welcome process
 const startWelcomeConversation = (message, record) => {
   var {text, user, team_id} = message
@@ -107,63 +117,94 @@ const startWelcomeConversation = (message, record) => {
   bot.startConversation(message, function(err,convo) {
     console.log(`Ah! A new person named ${user} has arrived...`)
 
-    convo.say({
-      delay: 0,
-      text: `Oh hello... I don't think I recognize you.`
-    })
-    convo.say({
-      delay: 1500,
-      text: `...you must be new in town.`
-    })
-
     record.set({
       'Greeted': true
     })
 
+    convo.say({
+      delay: 0,
+      text: `Oh hey what's up. Welcome to Hack Club`
+    })
+
+    convo.say({
+      delay: 0,
+      text: `My name is Chris, I build stuff around here`
+    })
+
     convo.ask({
       delay: 2000,
-      text: 'test test test',
+      text: 'dummy text',
       blocks: [
         {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "so... what brings you here?"
+            "text": "Do me a quick favor and click that button. This just tells me you're not a spambot"
           }
         },
-        {
-          "type": "divider"
-        },
+        {"type": "divider"},
         {
           "type": "actions",
           "elements": [
-            {
-              "type": "button",
-              "text": {
-                "type": "plain_text",
-                "text": "Running a club :hack_club:",
-                "emoji": true
-              },
-              "value": "club"
-            },
-            {
-              "type": "button",
-              "text": {
-                "type": "plain_text",
-                "text": "Coding help :laptop_fire:",
-                "emoji": true
-              },
-              "value": "code"
-            },
-            {
-              "type": "button",
-              "text": {
-                "type": "plain_text",
-                "text": "just chillin :dark_sunglasses:",
-                "emoji": true
-              },
-              "value": "chill"
-            }
+            textButtonElement("not a bot I promise :no_entry_sign: :robot_face:", "not a bot")
+          ]
+        }
+      ]
+    }, [
+      {
+        pattern: 'not a bot',
+        callback: function(response, convo) {
+          console.log(`Confirmed that ${user} is not a bot.`)
+          
+          bot.replyInteractive(response, `_yessss the way you did that was so human-like._`)
+          convo.gotoThread('welcome')
+
+          record.set({
+            'Engaged': true
+          })
+
+          setTimeout(() => bot.say({
+            user: `@${apps.bank}`,
+            channel: `@${apps.bank}`,
+            text: `<@${apps.bank}> give <@${user}> 20`
+          }), 2000)
+        },
+      }
+    ])
+
+    convo.say({
+      delay: 1000,
+      text: `Awesome thanks. Here, take some gold for your trouble`
+    }, 'welcome')
+
+    convo.say({
+      delay: 4000,
+      text: `Okay, now that I know you're not a bot, I have a confession:\n\nI am totally a bot. The real Chris can't be awake 24/7.`
+    }, 'welcome')
+
+    convo.say({
+      delay: 1500,
+      text: `Hope we can talk for real though—message me any time <@${users.cwalker}>.`
+    }, 'welcome')
+
+    convo.ask({
+      delay: 1500,
+      text: 'dummy text',
+      blocks: [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "In the meantime, let's get you situated.\n\nWhat brings you here?"
+          }
+        },
+        {"type": "divider"},
+        {
+          "type": "actions",
+          "elements": [
+            textButtonElement("Running a club :hack_club:", "club"),
+            textButtonElement("Coding help :laptop_fire:", "code"),
+            textButtonElement("just chillin :dark_sunglasses:", "chill")
           ]
         }
       ]
@@ -173,8 +214,14 @@ const startWelcomeConversation = (message, record) => {
         callback: function(response, convo) {
           console.log(`So ${user} is here because they run a club (or aspire to). I'll send them to #leaders`)
           
-          bot.replyInteractive(response, `_You tell toriel that you're here about your club._`)
+          bot.replyInteractive(response, `_"Club Leader". You say it casually. Even though that basically makes you Hack Club royalty._`)
           convo.gotoThread('club_thread')
+
+          bot.say({
+            user: `@${users.msw}`,
+            channel: `@${users.msw}`,
+            text: `Heads-up, <@${user}> is here about starting a club`
+          })
 
           record.set({
             'Reason for Joining': 'club'
@@ -186,8 +233,14 @@ const startWelcomeConversation = (message, record) => {
         callback: function(response, convo) {
           console.log(`Sounds like ${user} could use some coding help. I'll send them to #code`)
           
-          bot.replyInteractive(response, `_You tell toriel that your laptop is trying to kill you._`)
+          bot.replyInteractive(response, `_Ah yes, it seems your computer has grown legs and is trying to kill you._`)
           convo.gotoThread('code_thread')
+
+          bot.say({
+            user: `@${users.cwalker}`,
+            channel: `@${users.cwalker}`,
+            text: `Heads-up, <@${user}> is here for coding help`
+          })
 
           record.set({
             'Reason for Joining': 'code'
@@ -199,7 +252,7 @@ const startWelcomeConversation = (message, record) => {
         callback: function(response, convo) {
           console.log(`I guess ${user} is just here to chill. I'll send them to #lounge`)
           
-          bot.replyInteractive(response, `_You tell toriel that you're just here for the chills, bruh._`)
+          bot.replyInteractive(response, `_straight chillin._`)
           convo.gotoThread('chill_thread')
 
           record.set({
@@ -212,30 +265,110 @@ const startWelcomeConversation = (message, record) => {
     // create a path for 'club' users
     convo.addMessage({
       delay: 1500,
-      text: `Oh how lovely! Well, head over to <#${channels.hq}|hq> and introduce yourself.`,
-      action: 'goodbye_thread'
+      text: `Nice. We're thrilled to have you!`,
+    }, 'club_thread')
+
+    convo.addMessage({
+      delay: 1500,
+      text: `You should definitely talk to <@${users.msw}> about your club, if you haven't already.`,
+      action: 'intro_thread'
     }, 'club_thread')
 
     // create a path for 'code' users
     convo.addMessage({
       delay: 1500,
-      text: `Wonderful! Whatever questions you have, post them in <#${channels.code}|code>`,
-      action: 'goodbye_thread'
+      text: `:ok_hand: We'll do our best to help. Just post your question to <#${channels.code}|code>`,
+    }, 'code_thread')
+
+    convo.addMessage({
+      delay: 1500,
+      text: `It may take a minute for someone with the right expertise to see it. Hang out and talk for a bit—someone can probably help`,
+      action: 'intro_thread'
     }, 'code_thread')
 
     // create a path for 'chill' users
     convo.addMessage({
       delay: 1500,
-      text: `That's mostly what I'm here for too. Introduce yourself in <#${channels.lounge}|lounge>—a lot of people hang out there.`,
-      action: 'goodbye_thread',
+      text: `Perfect. Everyone here is super friendly—if you see a conversation, just jump in.`,
+      action: 'intro_thread',
+    }, 'chill_thread')
+
+    convo.addMessage({
+      delay: 1500,
+      text: `We have tons of channels here, but <#${channels.lounge}|lounge> is the best place to start.`,
+      action: 'intro_thread',
     }, 'chill_thread')
 
     convo.addMessage({
       delay: 2000,
-      text: `Good luck out there! And if you need anything, just message <@${users.cwalker}>—he can help.`,
-      action: 'completed'
-    }, 'goodbye_thread')
+      text: `Ok last thing: it helps a lot if people know a bit about you. Most people start with an introduction in <#${channels.welcome}|welcome>`
+    }, 'intro_thread')
 
+    convo.ask({
+      delay: 1500,
+      text: 'dummy text',
+      blocks: [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "Do you want to introduce yourself now?"
+          }
+        },
+        {"type": "divider"},
+        {
+          "type": "actions",
+          "elements": [
+            textButtonElement("Sure, why not :shrug:", "yes"),
+            textButtonElement("Nah, I just wanna lurk. :shell:", "no")
+          ]
+        }
+      ]
+    }, [
+      {
+        pattern: 'yes',
+        callback: function(response, convo) {
+          console.log(`${user} wants to make an introduction in the welcome channel`)
+          
+          bot.replyInteractive(response, `_let's do it_`)
+          convo.gotoThread('intro_yes_thread')
+
+          setTimeout(() => bot.say({
+            channel: `@${channels.welcome}`,
+            text: `Hey folks, we have a new member! <@${user}>, please introduce yourself.`
+          }), 4000)
+
+          record.set({
+            'Introduction': 'accepted'
+          })
+        },
+      },
+      {
+        pattern: 'no',
+        callback: function(response, convo) {
+          console.log(`${user} doesn't want an introduction.`)
+          
+          bot.replyInteractive(response, `_You choose to live life in the shadows._`)
+          convo.gotoThread('intro_no_thread')
+
+          record.set({
+            'Introduction': 'declined'
+          })
+        },
+      }
+    ])
+
+    convo.addMessage({
+      delay: 1500,
+      text: `Awesome! I'll send an intro prompt for you. See you over there`,
+      action: 'completed'
+    }, 'intro_yes_thread')
+
+    convo.addMessage({
+      delay: 1500,
+      text: `Ok, see you around then—and remember, message <@${users.cwalker}> if you need anything.`,
+      action: 'completed'
+    }, 'intro_no_thread')
   })
 }
 
@@ -251,7 +384,7 @@ controller.hears(/hello/i, 'direct_message', (bot, message) => {
     if (!record.get('Greeted'))
       startWelcomeConversation(message, record)
     else
-      bot.reply(message, 'Oh hello again! I hope you are doing well here.')
+      bot.reply(message, `Hello again!`)
   })
 })
 
@@ -301,7 +434,7 @@ controller.on('team_join', (bot, message) => {
           console.log(newbies)
           
           // Block initiation of contact with users in the main Hack Club workspace
-          // if (team_id == 'T0266FRGM') return
+          if (team_id == 'T0266FRGM') return
   
           startWelcomeConversation(fakeMessage, record)
         })
