@@ -267,7 +267,7 @@ const startWelcomeConversation = (message, record) => {
     
     // create a path for 'club' users
     convo.addMessage({
-      delay: 2000,
+      delay: 1500,
       text: `Nice. We're thrilled to have you!`,
     }, 'club_thread')
 
@@ -279,7 +279,7 @@ const startWelcomeConversation = (message, record) => {
 
     // create a path for 'code' users
     convo.addMessage({
-      delay: 2000,
+      delay: 1500,
       text: `:ok_hand: We'll do our best to help. Just post your question to <#${channels.code}|code>`,
     }, 'code_thread')
 
@@ -291,7 +291,7 @@ const startWelcomeConversation = (message, record) => {
 
     // create a path for 'chill' users
     convo.addMessage({
-      delay: 2000,
+      delay: 1500,
       text: `Perfect. Everyone here is super friendly—if you see a conversation, just jump in.`,
       action: 'intro_thread',
     }, 'chill_thread')
@@ -318,7 +318,6 @@ const startWelcomeConversation = (message, record) => {
             "text": "Do you want to introduce yourself now?"
           }
         },
-        {"type": "divider"},
         {
           "type": "actions",
           "elements": [
@@ -362,13 +361,13 @@ const startWelcomeConversation = (message, record) => {
     ], {}, 'intro_thread')
 
     convo.addMessage({
-      delay: 2000,
+      delay: 1500,
       text: `Awesome! I'll send an intro prompt for you. See you over there`,
       action: 'completed'
     }, 'intro_yes_thread')
 
     convo.addMessage({
-      delay: 2000,
+      delay: 1500,
       text: `Ok, see you around then—and remember, message <@${users.cwalker}> if you need anything.`,
       action: 'completed'
     }, 'intro_no_thread')
