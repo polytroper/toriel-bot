@@ -260,7 +260,7 @@ const startWelcomeConversation = (message, record) => {
           })
         },
       }
-    ])
+    ], {}, 'welcome')
     
     // create a path for 'club' users
     convo.addMessage({
