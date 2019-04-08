@@ -133,7 +133,7 @@ const startWelcomeConversation = (message, record) => {
 
     convo.addQuestion({
       delay: 2000,
-      text: 'dummy text',
+      text: 'Do me a quick favor...',
       blocks: [
         {
           "type": "section",
@@ -193,7 +193,7 @@ const startWelcomeConversation = (message, record) => {
 
     convo.addQuestion({
       delay: 2000,
-      text: 'dummy text',
+      text: 'What brings you here?',
       blocks: [
         {
           "type": "section",
@@ -309,7 +309,7 @@ const startWelcomeConversation = (message, record) => {
 
     convo.addQuestion({
       delay: 2000,
-      text: 'dummy text',
+      text: 'Do you want to introduce yourself now?',
       blocks: [
         {
           "type": "section",
