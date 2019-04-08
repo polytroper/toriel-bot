@@ -337,7 +337,7 @@ const startWelcomeConversation = (message, record) => {
           convo.gotoThread('intro_yes_thread')
 
           setTimeout(() => bot.say({
-            channel: `@${channels.welcome}`,
+            channel: `#${channels.welcome}`,
             text: `Hey folks, we have a new member! <@${user}>, please introduce yourself.`
           }), 4000)
 
