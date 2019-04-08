@@ -131,7 +131,7 @@ const startWelcomeConversation = (message, record) => {
       text: `My name is Chris, I build stuff around here`
     })
 
-    convo.ask({
+    convo.addQuestion({
       delay: 2000,
       text: 'dummy text',
       blocks: [
@@ -142,7 +142,6 @@ const startWelcomeConversation = (message, record) => {
             "text": "Do me a quick favor and click that button. This just tells me you're not a spambot"
           }
         },
-        {"type": "divider"},
         {
           "type": "actions",
           "elements": [
@@ -167,10 +166,10 @@ const startWelcomeConversation = (message, record) => {
             user: `@${apps.bank}`,
             channel: `@${apps.bank}`,
             text: `<@${apps.bank}> give <@${user}> 20`
-          }), 2000)
+          }), 3000)
         },
       }
-    ])
+    ], {}, 'default')
 
     convo.addMessage({
       delay: 1000,
@@ -178,27 +177,31 @@ const startWelcomeConversation = (message, record) => {
     }, 'welcome')
 
     convo.addMessage({
-      delay: 4000,
-      text: `Okay, now that I know you're not a bot, I have a confession:\n\nI am totally a bot. The real Chris can't be awake 24/7.`
+      delay: 6000,
+      text: `Okay, now that I know you're not a bot, I have a confession:`
     }, 'welcome')
 
     convo.addMessage({
-      delay: 1500,
-      text: `Hope we can talk for real though—message me any time <@${users.cwalker}>.`
+      delay: 2000,
+      text: `I am totally a bot. The real Chris can't be awake 24/7.`
+    }, 'welcome')
+
+    convo.addMessage({
+      delay: 2000,
+      text: `We'll talk for real at some point. In the meantime, let's get you situated.`
     }, 'welcome')
 
     convo.addQuestion({
-      delay: 1500,
+      delay: 2000,
       text: 'dummy text',
       blocks: [
         {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "In the meantime, let's get you situated.\n\nWhat brings you here?"
+            "text": "What brings you here?"
           }
         },
-        {"type": "divider"},
         {
           "type": "actions",
           "elements": [
@@ -264,37 +267,37 @@ const startWelcomeConversation = (message, record) => {
     
     // create a path for 'club' users
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `Nice. We're thrilled to have you!`,
     }, 'club_thread')
 
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `You should definitely talk to <@${users.msw}> about your club, if you haven't already.`,
       action: 'intro_thread'
     }, 'club_thread')
 
     // create a path for 'code' users
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `:ok_hand: We'll do our best to help. Just post your question to <#${channels.code}|code>`,
     }, 'code_thread')
 
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `It may take a minute for someone with the right expertise to see it. Hang out and talk for a bit—someone can probably help`,
       action: 'intro_thread'
     }, 'code_thread')
 
     // create a path for 'chill' users
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `Perfect. Everyone here is super friendly—if you see a conversation, just jump in.`,
       action: 'intro_thread',
     }, 'chill_thread')
 
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `We have tons of channels here, but <#${channels.lounge}|lounge> is the best place to start.`,
       action: 'intro_thread',
     }, 'chill_thread')
@@ -305,7 +308,7 @@ const startWelcomeConversation = (message, record) => {
     }, 'intro_thread')
 
     convo.addQuestion({
-      delay: 1500,
+      delay: 2000,
       text: 'dummy text',
       blocks: [
         {
@@ -359,13 +362,13 @@ const startWelcomeConversation = (message, record) => {
     ])
 
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `Awesome! I'll send an intro prompt for you. See you over there`,
       action: 'completed'
     }, 'intro_yes_thread')
 
     convo.addMessage({
-      delay: 1500,
+      delay: 2000,
       text: `Ok, see you around then—and remember, message <@${users.cwalker}> if you need anything.`,
       action: 'completed'
     }, 'intro_no_thread')
