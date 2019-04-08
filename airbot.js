@@ -26,7 +26,11 @@ var channelAppIds = {
     },
     TH438LCR3: { // Bot Dev
         channels: {
-            lounge: 'CH3KHRL11'
+            lounge: 'CH3KHRL11',
+            ship: 'CH3KHRL11',
+            code: 'CH3KHRL11',
+            welcome: 'CH3KHRL11',
+            hq: 'CH3KHRL11',
         },
         apps: {
             bank: 'UH2HS2SBS',
