@@ -359,7 +359,7 @@ const startWelcomeConversation = (message, record) => {
           })
         },
       }
-    ])
+    ], {}, 'intro_thread')
 
     convo.addMessage({
       delay: 2000,
