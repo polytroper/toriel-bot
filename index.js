@@ -172,22 +172,22 @@ const startWelcomeConversation = (message, record) => {
       }
     ])
 
-    convo.say({
+    convo.addMessage({
       delay: 1000,
       text: `Awesome thanks. Here, take some gold for your trouble`
     }, 'welcome')
 
-    convo.say({
+    convo.addMessage({
       delay: 4000,
       text: `Okay, now that I know you're not a bot, I have a confession:\n\nI am totally a bot. The real Chris can't be awake 24/7.`
     }, 'welcome')
 
-    convo.say({
+    convo.addMessage({
       delay: 1500,
       text: `Hope we can talk for real though—message me any time <@${users.cwalker}>.`
     }, 'welcome')
 
-    convo.ask({
+    convo.addQuestion({
       delay: 1500,
       text: 'dummy text',
       blocks: [
@@ -304,7 +304,7 @@ const startWelcomeConversation = (message, record) => {
       text: `Ok last thing: it helps a lot if people know a bit about you. Most people start with an introduction in <#${channels.welcome}|welcome>`
     }, 'intro_thread')
 
-    convo.ask({
+    convo.addQuestion({
       delay: 1500,
       text: 'dummy text',
       blocks: [
